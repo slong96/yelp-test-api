@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Find restaurants with the help of Yelp API</h1>
+<form method="GET" action="get_restaurants">
+  <label>Enter city or address: </label>
+  <input name="location_input" id="location_input">
+  <button type="submit">Search</button>
+</form>
+
+
+<form action="/">
+  <button type="submit">Home</button>
+</form>
+
+{%endblock%}

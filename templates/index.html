@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Find restaurants with the help of Yelp API</h1>
+<form method="GET" action="get_restaurants">
+  <label>Enter city or address: </label>
+  <input name="location_input" id="location_input">
+  <button type="submit">Search</button>
+</form>
+
+
+<form action="/">
+  <button type="submit">Home</button>
+</form>
+
+
+{%if location%}
+<h3>Here are the restaurants nearby for {{ location }}</h3>
+<div id="map"></div>
+<div id="location" data-location="{{ location }}"></div>
+<div id="lat" data-lat="{{ lat }}"></div>
+<div id="long" data-long="{{ long }}"></div>
+
+
+
+{%for i in range(len)%}
+<div>{{ location_info[i].name }}</div>
+<div>{{ location_info[i].phone }}</div>
+<div>{{ location_info[i].full_address }}</div>
+<div>{{ location_info[i].rating }}</div>
+<div>{{ location_info[i].review_count }}</div>
+<div>{{ location_info[i].latitude }}</div>
+<div>{{ location_info[i].longitude }}</div>
+<div>__________________________________________</div>
+{%endfor%}
+
+
+<script>
+  let locationText = document.getElementById('location').dataset.location
+  let lat = document.getElementById('lat').dataset.lat
+  let long = document.getElementById('long').dataset.long
+  
+
+  const map = L.map('map').setView([lat, long], 16)
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+  let markerText = locationText
+  L.marker([lat,long]).bindPopup(markerText).addTo(map);
+
+  // restaurant_names.forEach(function(i) {
+  //   let markerText = `<img id="business_image" src="${i.image}"> <b>${i.name}</b> <br><a href="${i.url}">Website</a>`
+  //   L.marker([i.latitude, i.longitude]).bindPopup(markerText).addTo(map)
+  // })
+  
+</script>
+{%endif%}
+
+
+<script src="{{ url_for('static', filename='map.js') }}"></script>
+{%endblock%}
+
